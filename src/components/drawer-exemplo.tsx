@@ -13,6 +13,7 @@ import { Button } from "./ui/button"
 import { useState, useRef } from "react"
 import Image from "next/image"
 import Phone from "../assets/phone.png"
+// @ts-ignore
 import removeWaterSound from "../assets/remove-water-from-speaker-sound.mp3"
 import { CheckCircle } from "lucide-react"
 

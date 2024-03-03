@@ -3,29 +3,28 @@ import {
   Drawer,
   DrawerClose,
   DrawerContent,
-  DrawerDescription,
   DrawerFooter,
   DrawerHeader,
   DrawerTitle,
   DrawerTrigger,
 } from "@/components/ui/drawer"
-import { Button } from "./ui/button"
-import { useState, useRef } from "react"
+import { useRef, useState } from "react"
 import Image from "next/image"
 import Phone from "../assets/phone.png"
 // @ts-ignore
 import removeWaterSound from "../assets/remove-water-from-speaker-sound.mp3"
 import { CheckCircle } from "lucide-react"
+import { Button } from "./ui/button"
 
 export function DrawerExemplo({
   children,
 }: Readonly<{
   children: React.ReactNode
 }>) {
-  const [progress, setProgress] = useState(0)
-  const [completed, setCompleted] = useState(false)
-  const [intervalId, setIntervalId] = useState(false)
-  const audioRef = useRef(null)
+  const [progress, setProgress] = useState<number>(0)
+  const [completed, setCompleted] = useState<boolean>(false) // Definindo a variável completed
+  const [intervalId, setIntervalId] = useState<number | null>(null)
+  const audioRef = useRef<HTMLAudioElement | null>(null)
 
   const handleClick = () => {
     const duration = 120000
@@ -38,14 +37,14 @@ export function DrawerExemplo({
     audioRef.current = audio
     audio.play()
 
-    const id = setInterval(() => {
+    const id = window.setInterval(() => {
       if (currentStep < steps) {
         currentStep++
         const newProgress = (currentStep / steps) * 100
         setProgress(newProgress)
       } else {
         clearInterval(id)
-        setCompleted(true)
+        setCompleted(true) // Atualizando o estado completed para true
         if (audioRef.current) {
           audioRef.current.pause()
         }
@@ -55,11 +54,13 @@ export function DrawerExemplo({
   }
 
   const handleStop = () => {
-    clearInterval(intervalId)
-    setProgress(0)
-    setCompleted(false)
-    if (audioRef.current) {
-      audioRef.current.pause()
+    if (intervalId) {
+      clearInterval(intervalId)
+      setProgress(0)
+      setCompleted(false) // Atualizando o estado completed para false
+      if (audioRef.current) {
+        audioRef.current.pause()
+      }
     }
   }
 
